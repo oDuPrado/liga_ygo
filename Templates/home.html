@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Liga Mística de Yu-Gi-Oh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        nav {
+            background-color: #1f1f1f;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 2px solid transparent;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        nav a:hover {
+            background-color: #3700b3;
+            color: #e0e0e0;
+            border-color: #03dac6;
+            box-shadow: 0 0 10px #03dac6, 0 0 20px #03dac6, 0 0 30px #03dac6;
+        }
+        .title {
+            margin: 0;
+            padding: 30px 0;
+            font-size: 3rem;
+            text-align: center;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            color: #bb86fc;
+            text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc, 0 0 30px #bb86fc;
+            position: relative;
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .title:hover {
+            transform: scale(1.05);
+            color: #ffffff;
+            text-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #bb86fc;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .card {
+            background-color: #272727;
+            border-radius: 10px;
+            width: 250px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc, 0 0 30px #bb86fc;
+            border-color: #03dac6;
+        }
+        .button {
+            color: #121212;
+            text-decoration: none;
+            font-size: 1rem;
+            background: #bb86fc;
+            border-radius: 15px;
+            padding: 20px 30px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 0 20px #03dac6, 0 0 30px #03dac6, 0 0 40px #03dac6;
+        }
+        .button:hover::before {
+            opacity: 1;
+        }
+        .button:hover {
+            background: #3700b3;
+            color: #e0e0e0;
+        }
+        footer {
+            background-color: #1f1f1f;
+            font-size: 0.9rem;
+            color: #aaa;
+            text-align: center;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+        }
+        .sync-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .sync-button {
+            color: #121212;
+            text-decoration: none;
+            font-size: 0.8rem;
+            background: #bb86fc;
+            border-radius: 10px;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: none;
+            cursor: pointer;
+        }
+        .sync-button:hover {
+            background: #3700b3;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{% static 'Logo.png' %}" alt="Liga Mística de Yu-Gi-Oh" style="height:40px;">
+        </div>
+        <div>
+            <a href="{% url 'deck_registration' %}">Cadastrar Deck</a>
+            <a href="{% url 'player_registration' %}">Cadastrar Jogadores</a>
+            <a href="{% url 'view_players' %}">Ver Jogadores</a>
+            <!-- Adicione aqui mais links conforme necessário -->
+        </div>
+    </nav>
+
+    <h1 class="title">LIGA MÍSTICA DE YU-GI-OH</h1>
+
+    <div class="container">
+        <!-- Ajuste o número de cartões e links conforme necessário -->
+        <div class="card">
+            <a href="{% url 'view_ranking' %}" class="button">Ranking</a>
+        </div>
+        <div class="card">
+            <a href="{% url 'tournament_day' %}" class="button">Dia de Torneios</a>
+        </div>
+        <div class="card">
+            <a href="{% url 'player_registration' %}" class="button">Jogadores</a>
+        </div>
+        <div class="card">
+            <a href="{% url 'register_tournament' %}" class="button">Cadastrar Torneio</a>
+        </div>
+    </div>
+
+    <footer>
+        <span>© 2024 Liga Mística de Yu-Gi-Oh. Todos os direitos reservados.</span>
+        <div class="sync-buttons">
+            <a href="{% url 'sync_all' %}" class="sync-button">Sync Tudo</a>
+            <a href="{% url 'report_decks' %}" class="sync-button">Report o Meta</a>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('hover');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('hover');
+            });
+        });
+
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.classList.add('hover');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('hover');
+            });
+        });
+
+        document.querySelectorAll('nav a').forEach(navLink => {
+            navLink.addEventListener('mouseenter', () => {
+                navLink.classList.add('hover');
+            });
+            navLink.addEventListener('mouseleave', () => {
+                navLink.classList.remove('hover');
+            });
+        });
+
+        const title = document.querySelector('.title');
+        title.addEventListener('mouseenter', () => {
+            title.classList.add('hover');
+        });
+        title.addEventListener('mouseleave', () => {
+            title.classList.remove('hover');
+        });
+    </script>
+</body>
+</html>

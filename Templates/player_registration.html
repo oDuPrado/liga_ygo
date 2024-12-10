@@ -1,0 +1,84 @@
+<!-- templates/player_registration.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #222; /* Cor mais escura da base */
+        border-radius: 8px;
+        color: #fff; /* Cor do texto na base */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Sombra para destacar o container */
+    }
+    h2 {
+        text-align: center;
+        color: #fff; /* Cor do título na base */
+    }
+    label {
+        display: block;
+        margin-bottom: .5rem;
+        color: #fff; /* Cor do texto na base */
+    }
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: .5rem;
+        border: 1px solid #555; /* Ajuste na cor da borda para melhor contraste */
+        border-radius: 4px;
+        background: #333; /* Cor de fundo mais escura */
+        color: #fff; /* Cor do texto na base */
+        box-sizing: border-box; /* Inclui padding e borda na largura total */
+    }
+    .error {
+        color: red;
+        font-size: .85rem;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff; /* Cor do botão na base */
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.2s; /* Suave transição de cor */
+    }
+    button:hover {
+        background-color: #0056b3; /* Cor do botão na base ao passar o mouse */
+        transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+    }
+    .alert {
+        padding: 10px;
+        background-color: #444; /* Cor de fundo do alerta */
+        color: #fff; /* Cor do texto do alerta */
+        border-radius: 4px;
+        margin-bottom: 20px;
+        text-align: center; /* Centraliza o texto do alerta */
+    }
+</style>    
+
+<div class="container">
+    <h2>Cadastro de Jogadores</h2>
+    
+    <!-- Exibe mensagens de sucesso/erro -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+</div>
+
+{% endblock %}

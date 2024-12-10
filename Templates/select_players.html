@@ -1,0 +1,20 @@
+<!-- templates/select_players.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <form method="get">
+    <input type="text" name="search" placeholder="Pesquisar jogador...">
+    <input type="submit" value="Pesquisar">
+  </form>
+
+  <form method="post" action="{% url 'register_ranking' tournament_id %}">
+    {% csrf_token %}
+    {% for player in players %}
+      <label>
+        <input type="checkbox" name="player_ids" value="{{ player.id }}"> {{ player.name }}
+      </label>
+    {% endfor %}
+    <input type="submit" value="Selecionar Jogadores">
+  </form>
+{% endblock %}

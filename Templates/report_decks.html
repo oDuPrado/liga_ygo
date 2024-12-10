@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yu-Gi-Oh Tournament Ranking</title>
+    {% load static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            background-image: url('{% static "background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .header .logo {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .header .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .header .title-container {
+            flex: 1;
+            text-align: center;
+        }
+        .header .title-container h1 {
+            font-size: 30px;
+            margin: 0;
+            color: #FFD700;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        .header .title-container .subtitle {
+            font-size: 18px;
+            margin-top: 5px;
+            color: #7FFF00;
+        }
+        .header .title-container .date {
+            font-size: 18px;
+            margin-left: 10px;
+            color: #FFD700;
+        }
+        .ranking-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 10px;
+        }
+        .ranking {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .player-card {
+            position: relative;
+            background: #2e2e2e;
+            width: 200px;
+            height: 300px;
+            margin: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            color: #fff;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 2px solid #fff;
+            border-radius: 10px;
+        }
+        .player-card:hover {
+            transform: translateY(-10px);
+        }
+        .position {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #f39c12;
+            color: #fff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid #fff;
+            z-index: 10;
+        }
+        .position-1 {
+            background-color: #e74c3c;
+            width: 40px;
+            height: 40px;
+        }
+        .position-2 {
+            background-color: #3498db;
+            width: 35px;
+            height: 35px;
+        }
+        .position-3 {
+            background-color: #f39c12;
+            width: 30px;
+            height: 30px;
+        }
+        .player-card .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            width: 90%;
+            text-align: center;
+            color: #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .player-card .deck-image {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #000;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .player-card .effect {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            font-size: 12px;
+            text-align: center;
+            color: #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .player-card .score {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            font-size: 12px;
+            text-align: center;
+            color: #000;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .capture-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .capture-button button {
+            background-color: #00BFFF;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .capture-button button:hover {
+            background-color: #009ACD;
+        }
+        @media (max-width: 768px) {
+            .player-card {
+                width: 90%;
+                height: auto;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="content-to-capture" class="ranking-container">
+        <div class="header">
+            <div class="logo">
+                <img src="{% static 'Logo.png' %}" alt="Tournament Logo">
+            </div>
+            <div class="title-container">
+                <h1>Top 10 Semanal</h1>
+                <div class="subtitle">
+                    Liga Mística Yu-Gi-Oh - 
+                    <span class="date">{{ tournament.date|date:"d M Y" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tournament-info">
+            <h2>{{ tournament.name }}</h2>
+        </div>
+
+        <div class="ranking">
+            <!-- Primeiro lugar -->
+            {% if results|length > 0 %}
+            <div class="player-card">
+                <div class="position position-1">1</div>
+                <div class="title">{{ results.0.player.name }}</div>
+                <div class="deck-image" style="background-image: url('{{ results.0.deck.image.url }}');"></div>
+                <div class="effect">{{ results.0.deck.name }}</div>
+                <div class="score">Pontos: {{ results.0.points }}</div>
+            </div>
+            {% endif %}
+
+            <!-- Segundo e terceiro lugares -->
+            {% if results|length > 1 %}
+            <div class="player-card">
+                <div class="position position-2">2</div>
+                <div class="title">{{ results.1.player.name }}</div>
+                <div class="deck-image" style="background-image: url('{{ results.1.deck.image.url }}');"></div>
+                <div class="effect">{{ results.1.deck.name }}</div>
+                <div class="score">Pontos: {{ results.1.points }}</div>
+            </div>
+            {% endif %}
+            {% if results|length > 2 %}
+            <div class="player-card">
+                <div class="position position-3">3</div>
+                <div class="title">{{ results.2.player.name }}</div>
+                <div class="deck-image" style="background-image: url('{{ results.2.deck.image.url }}');"></div>
+                <div class="effect">{{ results.2.deck.name }}</div>
+                <div class="score">Pontos: {{ results.2.points }}</div>
+            </div>
+            {% endif %}
+
+            <!-- Quarto a décimo lugares -->
+            {% for result in results|slice:"3:" %}
+            <div class="player-card">
+                <div class="position">{{ forloop.counter|add:3 }}</div>
+                <div class="title">{{ result.player.name }}</div>
+                <div class="deck-image" style="background-image: url('{{ result.deck.image.url }}');"></div>
+                <div class="effect">{{ result.deck.name }}</div>
+                <div class="score">Pontos: {{ result.points }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="capture-button">
+        <button onclick="capturePage()">Reportar</button>
+    </div>
+
+    <script>
+        function capturePage() {
+            var container = document.getElementById('content-to-capture');
+            html2canvas(container, {scale: 3, width: container.scrollWidth, height: container.scrollHeight}).then(canvas => {
+                // Cria um link para download da imagem
+                let link = document.createElement('a');
+                link.download = 'ranking_report.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

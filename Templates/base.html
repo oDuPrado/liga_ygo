@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Liga Mística de Yu-Gi-Oh</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #222;
+            padding: 10px 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 30px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 10px 20px;
+            background-color: #444;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #555;
+            border-color: #03dac6;
+            box-shadow: 0 0 10px #03dac6, 0 0 20px #03dac6, 0 0 30px #03dac6;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc, 0 0 30px #bb86fc;
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+        header a:hover {
+            transform: scale(1.05);
+            color: #ffffff;
+            text-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #bb86fc;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        .button {
+            background-color: #0066A2; /* Cor primária para os botões */
+            color: white;
+            width: 85%; /* Tamanho dos botões */
+            padding: 10px;
+            margin: 10px 0; /* Espaçamento entre os botões e outros elementos */
+            text-decoration: none; /* Remove o sublinhado dos links */
+            text-align: center; /* Centraliza o texto dentro do botão */
+            border: none; /* Remove a borda padrão */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            display: block; /* Os botões ocupam toda a largura do container */
+            margin-left: auto; /* Centraliza o botão na direção horizontal */
+            margin-right: auto; /* Centraliza o botão na direção horizontal */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0090C5;
+            transform: scale(1.05);
+        }
+        footer {
+            background-color: #222;
+            font-size: 0.9rem;
+            color: #aaa;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .form-container {
+            max-width: 500px; /* Ajuste a largura conforme necessário */
+            margin: auto;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 90%;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .button.secondary {
+            background-color: #0066A2; /* Cor primária para os botões */
+            color: white;
+            width: 80%; /* Tamanho dos botões */
+            padding: 10px;
+            margin: 10px 0; /* Espaçamento entre os botões e outros elementos */
+            text-decoration: none; /* Remove o sublinhado dos links */
+            text-align: center; /* Centraliza o texto dentro do botão */
+            border: none; /* Remove a borda padrão */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            display: block; /* Os botões ocupam toda a largura do container */
+            margin-left: auto; /* Centraliza o botão na direção horizontal */
+            margin-right: auto; /* Centraliza o botão na direção horizontal */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'deck_registration' %}">Cadastrar Deck</a>
+        <a href="{% url 'player_registration' %}">Cadastrar Jogadores</a>
+        <a href="{% url 'view_players' %}">Ver Jogadores</a>
+        <!-- Adicione mais links aqui conforme necessário -->
+    </nav>
+
+    <header>
+        <a href="{% url 'home' %}">Liga Mística de Yu-Gi-Oh</a>
+    </header>
+
+    <div class="container">
+        {% block content %}
+        <!-- O conteúdo específico do template filho irá aqui -->
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy;2024 Liga Mística de Yu-Gi-Oh. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Código para validação de formulários
+            var form = document.querySelector('form.needs-validation');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+        });
+    </script>
+</body>
+</html>

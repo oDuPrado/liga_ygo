@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 600px;
+        margin: 20px auto; /* Espaço uniforme ao redor do container */
+        padding: 20px;
+        background: #222; /* Cor de fundo escura para harmonizar com o base */
+        border-radius: 8px;
+        color: #fff; /* Cor do texto branco para contraste */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Sombra para destacar o container */
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px; /* Espaço adicional abaixo do título */
+        color: #fff; /* Cor do título */
+    }
+    label {
+        display: block;
+        margin-bottom: .5rem;
+        color: #fff; /* Cor do texto das labels */
+    }
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 1rem; /* Espaço adicional abaixo dos inputs */
+        border: 1px solid #555; /* Borda mais sutil */
+        border-radius: 4px;
+        background: #333; /* Cor de fundo para os campos de input */
+        color: #fff; /* Cor do texto dentro dos inputs */
+        box-sizing: border-box; /* Inclui padding e border no width total */
+    }
+    .error {
+        color: red;
+        font-size: .85rem;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff; /* Cor do botão mais vibrante */
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s, transform 0.3s; /* Suaviza a transição de cores e transformação */
+    }
+    button:hover {
+        background-color: #0056b3; /* Cor mais escura ao passar o mouse */
+        transform: translateY(-2px); /* Eleva o botão ligeiramente ao passar o mouse */
+    }
+</style>
+
+<div class="container">
+    <h2>Cadastro de Torneios</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+{% endblock %}

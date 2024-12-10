@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .tournament-result-form {
+    max-width: 600px;
+    margin: 20px auto; /* Aumenta a margem superior e inferior para mais espaço */
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #222; /* Cor de fundo para integrar com o tema */
+    color: #fff; /* Cor do texto */
+  }
+
+  .player-group {
+    background: #333; /* Levemente mais claro que o fundo para se destacar */
+    padding: 8px 15px; /* Aumenta o padding lateral para mais espaço interno */
+    margin-bottom: 20px; /* Aumenta o espaço entre os grupos de jogadores */
+    border-radius: 4px;
+  }
+
+  .player-group > div {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .player-group label {
+    display: block;
+    margin-top: 10px;
+    color: #fff; /* Cor do texto para branco */
+  }
+
+  .player-group input,
+  .player-group select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    background: #444; /* Cor de fundo para os campos */
+    border: 1px solid #555; /* Borda para os campos */
+    color: #ddd; /* Cor do texto para os campos */
+    border-radius: 4px; /* Bordas arredondadas para os campos */
+  }
+
+  .form-button {
+    display: block;
+    width: calc(100% - 2rem); /* Subtrai o padding do botão */
+    padding: 10px;
+    margin-top: 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out; /* Suaviza a transição da cor de fundo */
+  }
+
+  .form-button:hover {
+    background-color: #0056b3; /* Escurece o botão ao passar o mouse */
+    transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+  }
+
+  /* Estilo para corrigir o alinhamento do rodapé */
+  .footer {
+    clear: both;
+  }
+
+</style>
+
+<div class="tournament-result-form">
+  <h2>Registrar Resultados do Torneio</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+      <div class="player-group">
+        <div>
+          <label>Jogador {{ forloop.counter }}</label>
+          {{ form.player }}
+        </div>
+        <div>
+          <label>Posição</label>
+          {{ form.position }}
+        </div>
+        <div>
+          <label>Pontos</label>
+          {{ form.points }}
+        </div>
+        <div>
+          <label>Deck</label>
+          {{ form.deck }}
+        </div>
+      </div>
+    {% endfor %}
+    <button type="submit" class="form-button">Salvar Resultados</button>
+  </form>
+</div>
+
+{% endblock %}

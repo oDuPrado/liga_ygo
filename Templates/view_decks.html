@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="deck-stats-container" style="text-align: center;">
+    <h2>Relatório do Meta</h2>
+    <p>Veja abaixo as estatísticas de uso dos decks nos torneios.</p>
+    
+    <div class="stats-chart-container" style="display: flex; justify-content: center; align-items: flex-start; gap: 40px;">
+        <div class="summary-container" style="text-align: left; color: white; width: 300px;">
+            <h3>Estatísticas</h3>
+            <p><strong>Total de Jogadores:</strong> {{ total_players }}</p>
+            <p><strong>Total de Decks:</strong> {{ deck_stats|length }}</p>
+            <div id="custom-legend" class="custom-legend"></div>
+        </div>
+        
+        <div class="chart-container" style="position: relative; width: 60vw; max-width: 600px;">
+            <canvas id="decksChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const deckData = {{ deck_stats|safe }};
+    
+    // Filtra os decks que têm jogadores
+    const filteredDeckData = deckData.filter(deck => deck.count > 0);
+
+    const deckNames = filteredDeckData.map(deck => deck.name);
+    const deckPercentages = filteredDeckData.map(deck => deck.percentage);
+    const deckCounts = filteredDeckData.map(deck => deck.count);
+
+    // Conjunto de cores personalizadas
+    const customColors = [
+        "#FF5733", "#33FF57", "#5733FF", "#FF3399", "#99FF33", "#3399FF", "#FF9966", "#66FF99", "#9966FF",
+        "#FF6633", "#33FF66", "#6633FF", "#FF33CC", "#CCFF33", "#33CCFF", "#FFCC66", "#66FFCC", "#CC66FF",
+        "#FF9966", "#66FF99", "#9966FF", "#FF6699", "#99FF66", "#6699FF", "#FF3366", "#66FF33", "#3366FF",
+        "#FF33FF", "#FFFF33", "#33FFFF"
+    ];
+
+    // Ordenar os decks por porcentagem de participação (decrescente)
+    filteredDeckData.sort((a, b) => b.percentage - a.percentage);
+
+    const data = {
+        labels: deckNames,
+        datasets: [{
+            data: deckPercentages,
+            backgroundColor: customColors.slice(0, deckNames.length),
+            hoverOffset: 4
+        }]
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false, // Oculta a legenda padrão
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += context.parsed + '%';
+                        }
+                        return label;
+                    }
+                }
+            }
+        }
+    };
+
+    const config = {
+        type: 'pie',
+        data: data,
+        options: options
+    };
+
+    const decksChart = new Chart(document.getElementById('decksChart'), config);
+
+    // Gera a legenda personalizada
+    const customLegend = document.getElementById('custom-legend');
+    filteredDeckData.forEach((deck, index) => {
+        const legendItem = document.createElement('div');
+        legendItem.classList.add('legend-item');
+        legendItem.innerHTML = `
+            <span class="legend-color" style="background-color: ${customColors[index]}"></span>
+            <p class="legend-text">${deck.name} - ${deck.count} jogadores (${deck.percentage}%)</p>
+        `;
+        customLegend.appendChild(legendItem);
+    });
+</script>
+<style>
+    /* Estilos para a legenda personalizada */
+    .custom-legend {
+        margin-top: 20px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .legend-text {
+        color: white;
+    }
+
+    .deck-stats-container h2 {
+        color: white;
+    }
+
+    .summary-container {
+        font-size: 16px;
+    }
+
+    .summary-container h3 {
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .summary-container p {
+        margin: 5px 0;
+    }
+</style>
+{% endblock %}

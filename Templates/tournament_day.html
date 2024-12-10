@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .tournament-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .tournament-card {
+        background: #333;
+        color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: calc(33.33% - 20px); /* Limita 3 cards por linha com margem de 20px */
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .tournament-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Estilos para o popup */
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #333;
+        color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 80%; /* Aumenta a largura do popup */
+        max-width: 600px; /* Define uma largura máxima */
+        text-align: left;
+        overflow-y: auto; /* Adiciona barra de rolagem para conteúdo longo */
+        max-height: 80%; /* Define uma altura máxima para o popup */
+    }
+
+    .popup-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    /* Estilos para a barra de pesquisa */
+    .search-bar {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    input[type="date"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #333;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    /* Estilos para o botão "Voltar para o Topo" */
+    #scroll-to-top-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none; /* Ocultar o botão inicialmente */
+        transition: opacity 0.3s;
+    }
+
+    #scroll-to-top-button:hover {
+        opacity: 0.8;
+    }
+
+    .result-item {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="search-bar">
+    <input type="date" id="date-filter" placeholder="Filtrar por data">
+</div>
+
+<div class="tournament-list">
+    {% for tournament in tournaments %}
+    <div class="tournament-card" data-tournament-id="{{ tournament.id }}">
+        <h3>{{ tournament.date|date:"d M, Y" }}</h3>
+        <div>{{ tournament.name }}</div>
+    </div>
+
+    <!-- Popup de detalhes do torneio -->
+    <div class="popup-overlay" id="popup-{{ tournament.id }}">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup({{ tournament.id }})">&times;</span>
+            <h3>{{ tournament.date|date:"d M, Y" }}</h3>
+            <div>{{ tournament.name }}</div>
+            <h4>Resultados do Torneio:</h4>
+            <ul>
+                {% for result in tournament.tournamentresult_set.all %}
+                <li class="result-item">
+                    <strong>Jogador:</strong> {{ result.player.name }}<br>
+                    <strong>Posição:</strong> {{ result.position }}<br>
+                    <strong>Pontos:</strong> {{ result.points }}<br>
+                    <strong>Deck:</strong> {{ result.deck.name }}<br>
+                </li>
+                {% empty %}
+                <li>Nenhum resultado registrado.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<button id="scroll-to-top-button">Voltar Para o Topo</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.tournament-card').click(function() {
+        // Exibir o popup do torneio clicado
+        const tournamentId = $(this).data('tournament-id');
+        $(`#popup-${tournamentId}`).fadeIn();
+    });
+
+    // Função para fechar o popup
+    window.closePopup = function(tournamentId) {
+        $(`#popup-${tournamentId}`).fadeOut();
+    }
+
+    // Botão para rolar para o topo
+    $('#scroll-to-top-button').click(function() {
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+    });
+
+    // Mostrar o botão "Voltar para o Topo" quando o usuário rolar a página para baixo
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $('#scroll-to-top-button').fadeIn();
+        } else {
+            $('#scroll-to-top-button').fadeOut();
+        }
+    });
+
+    // Barra de pesquisa por data
+    $('#date-filter').on('input', function() {
+        const selectedDate = new Date($(this).val()).getTime();
+        $('.tournament-card').each(function() {
+            const tournamentDate = new Date($(this).find('h3').text()).getTime();
+            if (isNaN(selectedDate) || tournamentDate === selectedDate) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

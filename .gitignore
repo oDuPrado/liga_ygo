@@ -1,0 +1,30 @@
+# Ignore o diretório de credenciais
+/credentials/
+
+# Ignore arquivos de ambiente virtual
+.venv/
+env/
+venv/
+
+# Ignore arquivos de compilação do Python
+__pycache__/
+*.py[cod]
+
+# Ignore arquivos de banco de dados SQLite
+*.sqlite3
+
+# Ignore arquivos de configurações específicas de IDEs
+.vscode/
+.idea/
+
+# Ignore arquivos de log
+*.log
+
+# Ignore arquivos de cache
+*.pyc
+
+# Ignore o diretório de mídia se necessário
+/media/
+
+# Ignore o diretório de staticfiles se necessário
+/staticfiles/

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .ranking-table {
+    width: 100%; /* Utiliza toda a largura disponível */
+    background: #000; /* Fundo preto para a tabela */
+    color: #fff; /* Texto branco */
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para dar destaque */
+  }
+
+  .ranking-header {
+    background: #333; /* Cabeçalho com tom de cinza escuro */
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .ranking-row {
+    border-bottom: 1px solid #444; /* Linhas com uma divisória sutil */
+    transition: background-color 0.2s ease-in-out; /* Transição suave da cor de fundo */
+  }
+
+  .ranking-row:nth-child(odd) {
+    background: #222; /* Linhas ímpares com cinza ainda mais escuro */
+  }
+
+  .ranking-row:nth-child(even) {
+    background: #333; /* Linhas pares com um cinza escuro */
+  }
+
+  .ranking-row .position,
+  .ranking-row .name,
+  .ranking-row .deck,
+  .ranking-row .points {
+    padding: 15px; /* Mais espaço interno para melhor legibilidade */
+  }
+
+  .ranking-row .position {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .ranking-row .highlight {
+    background: #ffd600; /* Destaque em amarelo para o primeiro lugar */
+    color: #000;
+  }
+
+  .csv-export-button {
+    background-color: #333; /* Cor de fundo do botão, semelhante ao cabeçalho da tabela */
+    color: #fff; /* Cor do texto do botão */
+    border: none; /* Sem borda para o botão */
+    padding: 10px 20px; /* Espaçamento interno do botão */
+    margin: 20px; /* Margem externa do botão */
+    text-transform: uppercase; /* Texto em maiúsculas */
+    font-weight: bold; /* Texto em negrito */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para combinar com a tabela */
+    position: fixed; /* Fixa o botão em relação à janela do navegador */
+    bottom: 0; /* Posiciona na parte inferior da janela */
+    left: 0; /* Posiciona à esquerda da janela */
+    transition: background-color 0.2s ease-in-out; /* Transição suave da cor de fundo */
+  }
+
+  /* Estilização para realçar o botão ao passar o mouse */
+  .csv-export-button:hover {
+    background-color: #444; /* Escurece o botão um pouco ao passar o mouse */
+  }
+  
+  /* Responsividade para evitar sobreposição com a tabela em telas pequenas */
+  @media (max-width: 600px) {
+    .csv-export-button {
+      padding: 5px 10px;
+      margin: 10px;
+      font-size: 0.8em;
+    }
+  }
+
+  /* Detalhes e animações */
+  .details-row {
+    display: none;
+  }
+
+  .highlight:hover {
+    background-color: #ffd600;
+    color: #000;
+  }
+
+  .details-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .details-content {
+    background-color: #444;
+    color: #fff;
+  }
+
+  .player-details {
+    padding: 10px;
+  }
+</style>
+
+<table class="ranking-table">
+  <thead class="ranking-header">
+    <tr>
+      <th>Posição</th>
+      <th>Nome do Jogador</th>
+      <th>Deck</th>
+      <th>Pontos</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for rank in rankings %}
+    <tr class="ranking-row {% if forloop.counter == 1 %}highlight{% endif %}">
+      <td class="position">{{ forloop.counter }}</td>
+      <td class="name">{{ rank.player.name }}</td>
+      <td class="deck">Deck</td> <!-- Isto será implementado no futuro -->
+      <td class="points">{{ rank.total_points }}</td>
+    </tr>
+    <tr class="details-row">
+      <td colspan="4" class="details-content">
+        <button class="details-button">Detalhes do Jogador</button>
+        <div class="player-details">
+          <!-- Conteúdo dos detalhes do jogador aqui... -->
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<form action="{% url 'export_rankings_csv' %}" method="get">
+  <button type="submit" class="csv-export-button">Exportar CSV</button>
+</form>
+
+<script>
+  const rows = document.querySelectorAll('.ranking-row');
+  const detailsRows = document.querySelectorAll('.details-row');
+
+  rows.forEach((row, index) => {
+    const detailsRow = detailsRows[index];
+    const detailsButton = row.querySelector('.details-button');
+
+    detailsButton.addEventListener('click', () => {
+      detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+    });
+  });
+</script>
+</style>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .ranking-container {
+    background: #272727; /* Fundo escuro para o container */
+    color: white; /* Texto em branco para contraste */
+    max-width: 600px; /* Largura máxima do container */
+    margin: auto; /* Centraliza o container */
+    padding: 2rem; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  }
+
+  .ranking-header {
+    text-align: center; /* Centraliza o cabeçalho */
+    margin-bottom: 2rem; /* Espaço abaixo do cabeçalho */
+  }
+
+  .rank-item {
+    display: flex; /* Flexbox para alinhamento dos itens */
+    justify-content: space-between; /* Espaço entre nome e pontos */
+    margin-bottom: 1rem; /* Espaço abaixo de cada item */
+    padding: 0.5rem; /* Espaçamento interno */
+    background: #1c1c1c; /* Fundo dos itens */
+    border-radius: 5px; /* Bordas arredondadas para os itens */
+  }
+
+  .rank-item:first-child {
+    background: gold; /* Fundo dourado para o primeiro lugar */
+  }
+
+  .rank-item:nth-child(2) {
+    background: silver; /* Fundo prateado para o segundo lugar */
+  }
+
+  .rank-item:nth-child(3) {
+    background: #cd7f32; /* Fundo bronze para o terceiro lugar */
+  }
+
+  .rank-item span {
+    font-size: 1.2rem; /* Tamanho do texto */
+  }
+</style>
+
+<div class="ranking-container">
+  <div class="ranking-header">
+    <h2>Ranking Geral</h2>
+    <p>Os líderes do nosso campeonato!</p>
+  </div>
+  <div class="ranking-list">
+    {% for rank in rankings %}
+    <div class="rank-item">
+      <span>{{ rank.player.name }}</span>
+      <span>{{ rank.total_points }} pontos</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

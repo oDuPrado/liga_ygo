@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Sincronização de Torneios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .message-box {
+            background-color: #272727;
+            border-radius: 10px;
+            padding: 20px 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .message-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc, 0 0 30px #bb86fc;
+            border-color: #03dac6;
+        }
+        .button {
+            color: #121212;
+            text-decoration: none;
+            font-size: 1rem;
+            background: #bb86fc;
+            border-radius: 15px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .button:hover {
+            background: #3700b3;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <h1>Sincronização Completa</h1>
+        <p>Os dados dos torneios foram sincronizados com sucesso no Firestore.</p>
+        <a href="{% url 'home' %}" class="button">Voltar para a Página Inicial</a>
+    </div>
+</body>
+</html>
